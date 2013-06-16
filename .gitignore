@@ -1,5 +1,11 @@
 *.py[cod]
 
+# Config File as python pickle
+*.pkl
+
+# data files 
+*.csv 
+
 # C extensions
 *.so
 
