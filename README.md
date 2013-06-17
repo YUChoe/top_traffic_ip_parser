@@ -1,28 +1,43 @@
 top_traffic_ip_parser
 =====================
 
-analyze the result from the top_sip_dip_service.pl 
+analyze the result from Smartexpert > **top_sip_dip_service.pl**
 
-* Smart?????(i forgot the name)
-* cd /usr/local/Smart?????/bin
-* ./???? 1 eth3 eth4
+### SmartExpert
 
-*few hours later*
+```
+$ cd /usr/local/Smartexpert/bin
+$ ./????? 1 eth3 eth4
+```
 
-* cd /usr/local/Smart?????/bin
-* ls -l ../data
-* /usr/local/Smart?????/bin/top_sip_dip_service.pl
-* parse and gether the datas as csv format 
-* cd ../data
-* cat *.csv > result_total.csv 
+*few hours for gathering the traffic data*
 
-* cd /usr/local/Smart?????/bin
-* vi config.py
-* python config.py # for making config.pkl
-* python process.py 
+```
+$ cd /usr/local/Smartexpert/bin
+$ ls -l ../data
+$ ./top_sip_dip_service.pl # parse and gether the datas as csv format 
+---------------------------------------------------------------------------
+eNClue Co, LTD.                        
+COPYRIGHT 2001-2006
+PROTOCOL-SIP-DIP-SERVICE-SUMBYTE
+---------------------------------------------------------------------------
+Continue? (Y/N): y
+...
+$ cd ../data
+$ cat *.csv > result_total.csv 
+```
 
+### Usage 
 
-
-
-
-
+```
+$ cd /usr/local/Smartexprty/
+$ git clone git://github.com/YUChoe/top_traffic_ip_parser.git
+$ cd top_traffic_ip_parser
+$ vi config.py 
+# config source_filename, result_filename and path of data directory(../data) 
+...
+$ python config.py # for making config.pkl
+```
+```
+$ python process.py 
+```
