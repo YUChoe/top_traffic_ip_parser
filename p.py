@@ -1,6 +1,14 @@
 #!/usr/bin/python 
+import sys
 
-source_file = "/Users/pp/Downloads/TG_0619/2013-06-19.group.sort"
+if len(sys.argv) != 2 : 
+  print "Usage:"
+  print sys.argv[0], "2013-06-20.group.sort"
+  sys.exit()
+
+source_file = sys.argv[1]
+file_prefix = source_file.split('.')[0]
+#source_file = "2013-06-19.group.sort"
 # DMZ,61.33.233.1,DMZ,53,61.33.233.34,17,45
 s_fp = file(source_file, 'r')
 
@@ -46,10 +54,10 @@ print debug_line_count
 s_fp.close()
 
 debug_line_count = 0;
-d_fp = file('/Users/pp/Downloads/TG_0619/2013-06-19.groupport.csv', 'w')
-d2_fp = file('/Users/pp/Downloads/TG_0619/2013-06-19.others_groupport.csv', 'w')
-d3_fp = file('/Users/pp/Downloads/TG_0619/2013-06-19.only_udp53.csv', 'w')
-d4_fp = file('/Users/pp/Downloads/TG_0619/2013-06-19.only_udp137.csv', 'w')
+d_fp = file(file_prefix + '.groupport.csv', 'w')
+d2_fp = file(file_prefix + '.others_groupport.csv', 'w')
+d3_fp = file(file_prefix + '.only_udp53.csv', 'w')
+d4_fp = file(file_prefix + '.only_udp137.csv', 'w')
 for key in data : 
   debug_line_count = debug_line_count + 1
   if debug_line_count % 5000 == 0 : 

@@ -1,5 +1,15 @@
 
-d_fp = file('/Users/pp/Downloads/TG_0619/2013-06-19.groupport.csv', 'r')
+import sys
+
+if len(sys.argv) != 2 : 
+  print "Usage:"
+  print sys.argv[0], "2013-06-20.groupport.csv"
+  sys.exit()
+
+source_file = sys.argv[1]
+file_prefix = source_file.split('.')[0]
+
+d_fp = file(file_prefix + '.groupport.csv', 'r')
 
 # normailize 
 lines = []
@@ -84,7 +94,7 @@ for group_name_key in datas :
 }
 """
 
-fp = file('2013-06-19.groupresort.csv', 'w')
+fp = file(file_prefix + ".groupresort.csv", 'w')
 for k in sdata : 
     print 'processing', k
     for port_key in sdata[k] :
@@ -100,7 +110,7 @@ for k in sdata :
 
 fp.close()
 
-print "2013-06-19.groupresort.csv"
+print file_prefix + ".groupresort.csv"
 
 
 
