@@ -1,0 +1,63 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.2	//
+Async_Cond	tracetr.h	/^pthread_cond_t Async_Cond = PTHREAD_COND_INITIALIZER;$/;"	v
+Async_Mutex	tracetr.h	/^pthread_mutex_t Async_Mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+Bucket	tracetr.h	/^	struct _HASH_LIST_ **Bucket;$/;"	m	struct:_HASH_TABLE_
+CC	Makefile	/^CC      = gcc$/;"	m
+CFGFILE	tracetr.h	14;"	d
+DIP	tracetr.h	/^	char DIP[16];$/;"	m	struct:_HASH_LIST_
+DPort	tracetr.h	/^	unsigned short DPort;$/;"	m	struct:_HASH_LIST_
+EXEC	Makefile	/^EXEC    = ..\/..\/bin\/tracetr$/;"	m
+Free	tracetr.h	20;"	d
+GetDataFileName	tracetr.h	/^void GetDataFileName(char *FileName)$/;"	f
+GetDateTime	tracetr.h	/^void GetDateTime(char *DateTime)$/;"	f
+GetPcapFromDevice	tracetr.h	/^pcap_t *GetPcapFromDevice(char *DevName)$/;"	f
+HASHNUM	tracetr.h	17;"	d
+HASH_NEW_ADD	tracetr.h	18;"	d
+HashTable	tracetr.h	/^}HashTable;$/;"	t
+HashTableClear	tracetr.h	/^void HashTableClear(struct _HASH_LIST_ **Bucket)$/;"	f
+HashTableFind	tracetr.h	/^struct _HASH_LIST_ *HashTableFind(struct _HASH_LIST_ *Bucket, char *SIP, char *DIP, unsigned short SPort, unsigned short DPort)$/;"	f
+HashTableInsert	tracetr.h	/^int HashTableInsert(struct _HASH_LIST_ **Bucket, char *SIP, char *DIP, unsigned short SPort, unsigned short DPort, unsigned int PacketLen)$/;"	f
+Hashing	tracetr.h	/^unsigned int Hashing(const char *Item)$/;"	f
+LIB	Makefile	/^LIB     = -lpthread -lpcap$/;"	m
+LOGFILE	tracetr.h	12;"	d
+Log_Mutex	tracetr.h	/^pthread_mutex_t Log_Mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+MAXFD	tracetr.h	15;"	d
+Next	tracetr.h	/^	struct _HASH_LIST_ *Next;$/;"	m	struct:_HASH_LIST_
+PIDFILE	tracetr.h	13;"	d
+PacketBytes	tracetr.h	/^	unsigned int PacketBytes;$/;"	m	struct:_HASH_LIST_
+PacketCount	tracetr.h	/^	unsigned int PacketCount;$/;"	m	struct:_HASH_LIST_
+SIP	tracetr.h	/^	char SIP[16];$/;"	m	struct:_HASH_LIST_
+SPort	tracetr.h	/^	unsigned short SPort;$/;"	m	struct:_HASH_LIST_
+SRC	Makefile	/^SRC     = tracetr.c$/;"	m
+TH_ACK	tcpheader.h	22;"	d
+TH_FIN	tcpheader.h	18;"	d
+TH_PUSH	tcpheader.h	21;"	d
+TH_RST	tcpheader.h	20;"	d
+TH_SYN	tcpheader.h	19;"	d
+TH_URG	tcpheader.h	23;"	d
+TotalCount	tracetr.h	/^	unsigned int TotalCount; \/\/아이템의 수$/;"	m	struct:_HASH_TABLE_
+TraceData	tracetr.h	/^HashTable TraceData;$/;"	v
+TrafficData_Mutex	tracetr.h	/^pthread_mutex_t TrafficData_Mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+_HASH_LIST_	tracetr.h	/^struct _HASH_LIST_$/;"	s
+_HASH_TABLE_	tracetr.h	/^typedef struct _HASH_TABLE_$/;"	s
+daemon_init	tracetr.c	/^void daemon_init(const char *pname, int facility)$/;"	f
+loop	tracetr.c	/^int loop = 1;$/;"	v
+main	tracetr.c	/^int main(int argc, char **argv)$/;"	f
+tcp_seq	tcpheader.h	/^typedef u_int32_t tcp_seq;$/;"	t
+tcphdr_c	tcpheader.h	/^struct tcphdr_c$/;"	s
+th_ack	tcpheader.h	/^    tcp_seq th_ack;     \/* acknowledgement number *\/$/;"	m	struct:tcphdr_c
+th_dport	tcpheader.h	/^    u_int16_t th_dport;     \/* destination port *\/$/;"	m	struct:tcphdr_c
+th_flags	tcpheader.h	/^    u_int8_t th_flags;$/;"	m	struct:tcphdr_c
+th_off	tcpheader.h	/^    u_int8_t th_off:4;      \/* data offset *\/$/;"	m	struct:tcphdr_c
+th_seq	tcpheader.h	/^    tcp_seq th_seq;     \/* sequence number *\/$/;"	m	struct:tcphdr_c
+th_sport	tcpheader.h	/^    u_int16_t th_sport;     \/* source port *\/$/;"	m	struct:tcphdr_c
+th_sum	tcpheader.h	/^    u_int16_t th_sum;       \/* checksum *\/$/;"	m	struct:tcphdr_c
+th_urp	tcpheader.h	/^    u_int16_t th_urp;       \/* urgent pointer *\/$/;"	m	struct:tcphdr_c
+th_win	tcpheader.h	/^    u_int16_t th_win;       \/* window *\/$/;"	m	struct:tcphdr_c
+th_x2	tcpheader.h	/^    u_int8_t th_x2:4;       \/* (unused) *\/$/;"	m	struct:tcphdr_c
+thread_monitor	tracetr.c	/^void *thread_monitor(void *data)$/;"	f
