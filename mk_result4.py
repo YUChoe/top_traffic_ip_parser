@@ -26,6 +26,7 @@ source_files_ls = """2013-05-29.dat
 
 port_data = {}
 # dip : [dports ...]
+all_port_data = {}
 
 def in_pok(ipaddr) :
     tip = ipaddr.split('.')
@@ -40,13 +41,16 @@ for filename in source_files_ls.split('\n') :
     _time = time.localtime()
     print "processing", filename, '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
     fp = file(filename, 'r')
-    
+    dbgcnt = 0
+    # 1si loop: sip-dip or dip-sip pairing > make very large dictionary 
     for line in fp.readlines() :
         line = line[:-1]
         if line == '' : continue
         r = line.split(',')
         if len(r) < 8 : 
             print 'Error:', line
+            continue
+        if r[7] == '17' : # UDP
             continue
         if r[8] == 'S-C' : 
             # 2013-06-08 23:59:28,61.33.233.29,172.20.152.7,80,3348,538083268,4,6,S-C
@@ -61,40 +65,132 @@ for filename in source_files_ls.split('\n') :
             listen_port = r[4]
         else :
             continue
+        if not in_pok(server_ip) or not in_pok(client_ip) : continue
 
-        if not in_pok(server_ip) : continue
+        real_key_all_port_data = ''
 
-        if port_data.has_key(server_ip) : 
-            _ports = port_data[server_ip]
-            if listen_port not in _ports :
-                _ports.append(listen_port)
-                _ports = sorted(_ports)
-                port_data[server_ip] = _ports
-                #print "appended", server_ip, listen_port, len(_ports)
-            else :
-                #print "passed", server_ip, listen_port
-                continue
-        elif port_data.has_key(client_ip) :
-            # mismatch ? 
+        if ('%s,%s' % (client_ip, server_ip)) in all_port_data :
+            real_key_all_port_data = '%s,%s' % (client_ip, server_ip)
+            _values = all_port_data[real_key_all_port_data]
+            _req_ports = _values[0]
+            _listen_ports = _values[1]
+            _cnt = _values[2]
+            if req_port not in _req_ports : 
+                _req_ports.append(req_port)
+            if listen_port not in _listen_ports :
+                _listen_ports.append(listen_port)
+            all_port_data[real_key_all_port_data] = [_req_ports, _listen_ports, (_cnt+1)] 
+        elif ('%s,%s' % (server_ip, client_ip)) in all_port_data :
+            #mismatch
+            """
+            real_key_all_port_data = '%s,%s' % (server_ip, client_ip)
+            _values = all_port_data[real_key_all_port_data]
+            _req_ports = _values[0]
+            _listen_ports = _values[1]
+            _cnt = _values[2]
+            if listen_port not in _req_ports : 
+                _req_ports.append(listen_port)
+            if _req_ports not in _listen_ports :
+                _listen_ports.append(_req_ports)
+            all_port_data[real_key_all_port_data] = [_req_ports, _listen_ports, (_cnt+1)]
+            """
+        else :
+            # new all_port_data C-S flow 
+            real_key_all_port_data = '%s,%s' % (client_ip, server_ip)
+            _req_ports = [req_port]
+            _listen_ports = [listen_port]
+            all_port_data[real_key_all_port_data] = [_req_ports, _listen_ports, 1]
+
+        dbgcnt += 1
+        if dbgcnt % 10000 == 0 :
+            print '\r', dbgcnt
+
+
+    _time = time.localtime()
+    print "all_port_data", len(all_port_data), '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
+    #print all_port_data['172.16.1.42,10.200.33.1']
+    #sys.exit(-2)
+
+
+
+
+
+
+
+    # 2nd loop choose service ports 
+    for _key in all_port_data : 
+        _values = all_port_data[_key]
+        if _values[2] < 5 : 
             continue
-            #_ports = port_data[client_ip]
-            #if req_port not in _ports : 
-            #    _ports.append(req_port)
+        
+        if len(_values[0]) > len(_values[1]) :
+            # C-S flow 
+            (client_ip, server_ip) = _key.split(',')
+            if server_ip in port_data :
+                _ports = port_data[server_ip]
+                _ports = sorted( set(_ports + _values[1]))
+                #for _p in _values[1] :
+                #    if _p not in _ports :
+                #        _ports.append(_p)
+                port_data[server_ip] = _ports
+            else :
+                _ports = []
+                for _p in _values[1] :
+                    if _p not in _ports :
+                        _ports.append(_p)
+                port_data[server_ip] = _ports
 
-        else : 
-            _ports = [listen_port]
-            port_data[server_ip] = _ports
-            #print "new", server_ip, listen_port
-    print "finished -", len(port_data)
+            """
+            if server_ip in port_data :
+                _ports = port_data[server_ip]
+                if listen_port not in _ports :
+                    _ports.append(listen_port)
+                    _ports = sorted(_ports)
+                    port_data[server_ip] = _ports
+                else :
+                    #print "passed", server_ip, listen_port
+                    continue
+            else : 
+                _ports = [listen_port]
+                port_data[server_ip] = _ports
+                #print "new", server_ip, listen_port
+            """
+        elif len(_values[0]) < len(_values[1]) :
+            # S-C flow - mismatch case 
+            (client_ip, server_ip) = _key.split(',')
+            if server_ip in port_data :
+                _ports = port_data[server_ip]
+                _ports = sorted( set(_ports + _values[0]))
+                #for _p in _values[0] :
+                #    if _p not in _ports :
+                #        _ports.append(_p)
+                
+                port_data[server_ip] = _ports
+            else :
+                _ports = []
+                for _p in _values[0] :
+                    if _p not in _ports :
+                        _ports.append(_p)
+                port_data[server_ip] = _ports
+
+    _time = time.localtime()
+    print "finished - step 2 ", len(port_data), '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
+    
     fp.close()
-    break
+    
+
+#print port_data['10.200.33.1']
 
 total_rows = len(port_data)
 fp = file('TG_result5.csv', 'w')
 idxcount = 0
 for server_ip in port_data : 
     listen_ports = port_data[server_ip]
-    _str = '%s,%s\n' % (server_ip, ','.join(listen_ports))
+    try:
+        _str = '%s,%s\n' % (server_ip, ','.join(listen_ports))
+    except:
+        print "Error2:", server_ip, listen_ports
+        sys.exit(-1)
     fp.write(_str)
     idxcount += 1
     if idxcount % 1000 == 0 : 
