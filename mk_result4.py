@@ -53,6 +53,8 @@ for filename in source_files_ls.split('\n') :
         elif r[8] == 'C-S' : 
             server_ip = r[2]
             listen_port = r[4]
+        else :
+            continue
 
         if not in_pok(server_ip) : continue
 
