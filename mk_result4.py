@@ -111,13 +111,6 @@ for filename in source_files_ls.split('\n') :
     print '\r', dbgcnt
     _time = time.localtime()
     print "all_port_data", len(all_port_data), '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
-    #print all_port_data['172.16.1.42,10.200.33.1']
-    #sys.exit(-2)
-
-
-
-
-
 
 
     # 2nd loop choose service ports 
@@ -143,21 +136,6 @@ for filename in source_files_ls.split('\n') :
                         _ports.append(_p)
                 port_data[server_ip] = _ports
 
-            """
-            if server_ip in port_data :
-                _ports = port_data[server_ip]
-                if listen_port not in _ports :
-                    _ports.append(listen_port)
-                    _ports = sorted(_ports)
-                    port_data[server_ip] = _ports
-                else :
-                    #print "passed", server_ip, listen_port
-                    continue
-            else : 
-                _ports = [listen_port]
-                port_data[server_ip] = _ports
-                #print "new", server_ip, listen_port
-            """
         elif len(_values[0]) < len(_values[1]) :
             # S-C flow - mismatch case 
             (client_ip, server_ip) = _key.split(',')
@@ -184,7 +162,7 @@ for filename in source_files_ls.split('\n') :
 
     #print port_data['10.200.33.1']
 
-    total_rows = len(port_data)
+    #total_rows = len(port_data)
     fp = file('TG_result5_%s.csv' % (filename), 'w')
     #idxcount = 0
     for server_ip in port_data : 
@@ -204,9 +182,14 @@ for filename in source_files_ls.split('\n') :
     fp.close()
     print "output", 'TG_result5_%s.csv' % (filename),
 
+del port_data
+del all_port_data
 
 
-
+for filename in source_files_ls.split('\n') :
+    filename = 'TG_result5_%s.csv' % (filename)
+    fp = file(filename, 'r')
+    # merge 
 
 
 
