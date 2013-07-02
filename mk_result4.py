@@ -24,10 +24,6 @@ source_files_ls = """2013-05-29.dat
 2013-06-10-1.dat
 2013-06-10.dat"""
 
-port_data = {}
-# dip : [dports ...]
-all_port_data = {}
-
 def in_pok(ipaddr) :
     tip = ipaddr.split('.')
     if tip[0] in ['10', '172','192','190','100','61'] : 
@@ -38,10 +34,16 @@ def in_pok(ipaddr) :
         return False
 
 for filename in source_files_ls.split('\n') :
+
+    port_data = {}
+    # dip : [dports ...]
+    all_port_data = {}
+
     _time = time.localtime()
     print "processing", filename, '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
     fp = file(filename, 'r')
     dbgcnt = 0
+
     # 1si loop: sip-dip or dip-sip pairing > make very large dictionary 
     for line in fp.readlines() :
         line = line[:-1]
@@ -103,9 +105,10 @@ for filename in source_files_ls.split('\n') :
 
         dbgcnt += 1
         if dbgcnt % 10000 == 0 :
-            print '\r', dbgcnt
+            print '\r', dbgcnt,
+            sys.stdout.flush()
 
-
+    print '\r', dbgcnt
     _time = time.localtime()
     print "all_port_data", len(all_port_data), '%02d:%02d:%02d' % (_time[3], _time[4], _time[5])
     #print all_port_data['172.16.1.42,10.200.33.1']
@@ -179,25 +182,27 @@ for filename in source_files_ls.split('\n') :
     fp.close()
     
 
-#print port_data['10.200.33.1']
+    #print port_data['10.200.33.1']
 
-total_rows = len(port_data)
-fp = file('TG_result5.csv', 'w')
-idxcount = 0
-for server_ip in port_data : 
-    listen_ports = port_data[server_ip]
-    try:
-        _str = '%s,%s\n' % (server_ip, ','.join(listen_ports))
-    except:
-        print "Error2:", server_ip, listen_ports
-        sys.exit(-1)
-    fp.write(_str)
-    idxcount += 1
-    if idxcount % 1000 == 0 : 
-        print idxcount, '/', total_rows
+    total_rows = len(port_data)
+    fp = file('TG_result5_%s.csv' % (filename), 'w')
+    #idxcount = 0
+    for server_ip in port_data : 
+        listen_ports = port_data[server_ip]
+        try:
+            _str = '%s,%s\n' % (server_ip, ','.join(listen_ports))
+        except:
+            print "Error2:", server_ip, listen_ports
+            sys.exit(-1)
+        fp.write(_str)
+        #idxcount += 1
+        #if idxcount % 1000 == 0 : 
+        #    print idxcount, '/', total_rows
 
 
-print idxcount, '/', total_rows
+    #print idxcount, '/', total_rows
+    fp.close()
+    print "output", 'TG_result5_%s.csv' % (filename),
 
 
 
