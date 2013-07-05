@@ -8,6 +8,7 @@ sip = ['172.16.20.67','172.16.20.68','172.16.20.69']
 data = {}
 
 idxcnt = 0
+ic2 = 0
 for l in cs_fp.xreadlines():
   l = l.rstrip().split(',')
 
@@ -17,15 +18,16 @@ for l in cs_fp.xreadlines():
     continue
   """
 
-  if (l[4] == '21113' and l[1] in sip) :
+  if l[4] == '21113' and l[1] in sip :
+    ic2 += 1
     if l[2] not in data : 
       n_row = '%s,%s,%s' % (l[1], l[2], '21113')
-      data[l[1]] = n_row
+      data[l[2]] = n_row
 
   idxcnt += 1
 
   if idxcnt % 10000 == 0 : 
-    print '\r', idxcnt,'/90360496', int(idxcnt*100/90360496),'%', len(data), 
+    print '\r', idxcnt,'/90360496', int(idxcnt*100/90360496),'%', len(data), '21113count:', ic2, 
     sys.stdout.flush()
 
 print '\r', idxcnt, '/90360496 100 %', len(data)
